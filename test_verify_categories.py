@@ -7,27 +7,33 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
 import unittest, time, re
 
-class VerifyHomePageBox(unittest.TestCase):
+class VerifyCategories(unittest.TestCase):
     def setUp(self):
         self.driver = webdriver.Firefox()
-        self.driver.implicitly_wait(30)
+        #self.driver.implicitly_wait(30)
         self.base_url = "http://demo.litecart.net/"
         self.verificationErrors = []
         self.accept_next_alert = True
     
-    def test_verify_home_page_box(self):
+    def test_verify_categories(self):
         driver = self.driver
         driver.get(self.base_url + "/en/")
-        self.assertEqual(5, len(driver.find_elements_by_xpath("//div[@id='box-most-popular']/div/ul/li/")))
-        # ERROR: Caught exception [Error: locator strategy either id or name must be specified explicitly.]
-        # ERROR: Caught exception [unknown command [forJson]]
-        has_discount = self.is_element_present(By.CSS_SELECTOR, "a[title='${title}'] strong.campaign-price")
-        # ERROR: Caught exception [unknown command [if]]
-        self.assertEqual("${price}", driver.find_element_by_css_selector("a[title='${title}'] strong.campaign-price").text)
-        # ERROR: Caught exception [unknown command [else]]
-        self.assertEqual("${price}", driver.find_element_by_css_selector("a[title='${title}'] span.price").text)
-        # ERROR: Caught exception [unknown command [endIf]]
-        # ERROR: Caught exception [unknown command [endForJson]]
+        self.assertEqual("http://demo.litecart.net/en/rubber-ducks-c-1/", driver.find_element_by_xpath("//nav[@id='site-menu']/ul/li[2]/a").get_attribute("href"))
+        self.assertEqual("Rubber Ducks", driver.find_element_by_xpath("//nav[@id='site-menu']/ul/li[2]/a").text)
+        driver.find_element_by_link_text("Rubber Ducks").click()
+        for i in range(60):
+            try:
+                if self.is_element_present(By.CSS_SELECTOR, "li.product img"): break
+            except: pass
+            time.sleep(1)
+        else: self.fail("time out")
+        driver.find_element_by_link_text("This n' that").click()
+        for i in range(60):
+            try:
+                if not self.is_element_present(By.CSS_SELECTOR, "li.product img"): break
+            except: pass
+            time.sleep(1)
+        else: self.fail("time out")
     
     def is_element_present(self, how, what):
         try: self.driver.find_element(by=how, value=what)

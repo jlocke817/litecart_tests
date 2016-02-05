@@ -23,7 +23,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//img[@alt='Green Duck']</td>
+	<td>css=li.product a[title='Rubber Duck']</td>
 	<td></td>
 </tr>
 <tr>
@@ -42,9 +42,34 @@
 	<td>title</td>
 </tr>
 <tr>
+	<td>storeElementPresent</td>
+	<td>css=div#box-product strong.campaign-price</td>
+	<td>has_discount</td>
+</tr>
+<tr>
+	<td>if</td>
+	<td>${has_discount}</td>
+	<td></td>
+</tr>
+<tr>
 	<td>storeText</td>
-	<td>css=span.price</td>
+	<td>css=div#box-product strong.campaign-price</td>
 	<td>price</td>
+</tr>
+<tr>
+	<td>else</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>css=div#box-product span.price</td>
+	<td>price</td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
+	<td></td>
 </tr>
 <tr>
 	<td>storeEval</td>
@@ -55,6 +80,26 @@
 	<td>storeEval</td>
 	<td>${amount}*${price}</td>
 	<td>total</td>
+</tr>
+<tr>
+	<td>storeElementPresent</td>
+	<td>name=options[Size]</td>
+	<td>has_size</td>
+</tr>
+<tr>
+	<td>if</td>
+	<td>${has_size}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>name=options[Size]</td>
+	<td>label=Small</td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
+	<td></td>
 </tr>
 <tr>
 	<td>click</td>
